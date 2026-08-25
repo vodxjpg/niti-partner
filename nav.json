@@ -1,0 +1,20 @@
+{
+  "name": "Niftipay Partners",
+  "groups": [
+    { "group": "Getting Started", "pages": ["getting-started/index", "getting-started/authentication", "getting-started/idempotency", "getting-started/errors"] },
+    { "group": "API Reference", "pages": [
+        { "group": "Customers", "pages": ["api/customers/create", "api/customers/list", "api/customers/retrieve"] },
+        { "group": "Fiat Orders", "pages": ["api/fiat-orders/create", "api/fiat-orders/list", "api/fiat-orders/retrieve"] },
+        { "group": "Crypto Orders", "pages": ["api/crypto-orders/create", "api/crypto-orders/retrieve"] },
+        { "group": "Wallets", "pages": ["api/wallets/create", "api/wallets/list"] },
+        { "group": "Withdrawals", "pages": ["api/withdrawals/create", "api/withdrawals/list"] },
+        { "group": "Withdrawal Wallets", "pages": ["api/withdrawal-wallets/create", "api/withdrawal-wallets/list"] },
+        { "group": "Verifications", "pages": ["api/verifications/create", "api/verifications/list", "api/verifications/retrieve"] },
+        { "group": "Documents", "pages": ["api/documents/list", "api/documents/download"] },
+        { "group": "Agreements", "pages": ["api/agreements/list", "api/agreements/accept"] },
+        "api/capabilities",
+        "api/webhooks"
+    ]},
+    { "group": "Guides", "pages": ["guides/quickstart"] }
+  ]
+}
