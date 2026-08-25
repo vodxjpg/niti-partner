@@ -116,4 +116,11 @@ for (const file of pages) {
 writeFileSync(join(DIST, "search-index.json"), JSON.stringify(searchIndex));
 mkdirSync(join(DIST, "static"), { recursive: true });
 for (const f of readdirSync(STATIC)) copyFileSync(join(STATIC, f), join(DIST, "static", f));
+// Root redirect: the intro page is getting-started/index; serve it at "/".
+writeFileSync(
+  join(DIST, "index.html"),
+  `<!doctype html><html lang="en"><head><meta charset="utf-8">` +
+    `<meta http-equiv="refresh" content="0;url=/getting-started/index.html">` +
+    `<title>Niftipay Partners</title></head><body>Redirecting to <a href="/getting-started/index.html">getting started</a>…</body></html>`,
+);
 console.log(`built ${pages.length} pages`);
