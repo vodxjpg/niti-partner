@@ -10,3 +10,18 @@ document.getElementById("theme-toggle").addEventListener("click", () => {
 });
 // sidebar active is set at build time; ensure scroll into view
 document.querySelector("#sidebar a.active")?.scrollIntoView({ block: "nearest" });
+
+// copy-to-clipboard on every code block
+document.querySelectorAll("#content pre").forEach((pre) => {
+  const btn = document.createElement("button");
+  btn.className = "copy-btn";
+  btn.type = "button";
+  btn.textContent = "Copy";
+  btn.addEventListener("click", async () => {
+    const text = pre.querySelector("code")?.innerText ?? pre.innerText;
+    try { await navigator.clipboard.writeText(text); } catch { /* ignore */ }
+    btn.textContent = "Copied";
+    setTimeout(() => (btn.textContent = "Copy"), 1500);
+  });
+  pre.appendChild(btn);
+});

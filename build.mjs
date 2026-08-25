@@ -12,6 +12,27 @@ const nav = JSON.parse(readFileSync(join(ROOT, "nav.json"), "utf8"));
 
 const md = markdownIt({ html: true, linkify: true, typographer: true });
 
+// Pretty-print ```json fenced blocks so response examples are multi-line and
+// readable instead of one long line.
+const defaultFence = md.renderer.rules.fence;
+md.renderer.rules.fence = (tokens, idx, options, env, self) => {
+  const token = tokens[idx];
+  const info = token.info.trim();
+  if (info === "json") {
+    try {
+      const pretty = JSON.stringify(JSON.parse(token.content), null, 2);
+      return `<pre><code class="language-json">${md.utils.escapeHtml(pretty)}</code></pre>`;
+    } catch {
+      /* fall through to default renderer if not valid JSON */
+    }
+  }
+  return defaultFence(tokens, idx, options, env, self);
+};
+
+// Slug -> human title, populated before the render loop so the sidebar can show
+// real names ("Create a customer") instead of the URL slug ("create").
+const pageTitles = new Map();
+
 function walk(dir, acc = []) {
   for (const e of readdirSync(dir, { withFileTypes: true })) {
     const p = join(dir, e.name);
@@ -48,9 +69,9 @@ function renderSidebar(groups, current) {
     const items = g.pages || [];
     for (const p of items) {
       if (p.pages) {
-        for (const sub of p.pages) html += li(sub, sub.split("/").pop(), sub === current);
+        for (const sub of p.pages) html += li(sub, pageTitles.get(sub) || sub.split("/").pop(), sub === current);
       } else if (typeof p === "string") {
-        html += li(p, p.split("/").pop(), p === current);
+        html += li(p, pageTitles.get(p) || p.split("/").pop(), p === current);
       }
     }
     html += `</ul></div>`;
@@ -69,7 +90,7 @@ function layout({ title, section, body, current, toc }) {
 </head>
 <body>
 <header class="topbar">
-  <div class="brand"><img src="/static/niftipay-dark.svg" alt="Niftipay" class="logo-dark"><img src="/static/niftipay-light.svg" alt="Niftipay" class="logo-light"><span>Partners</span></div>
+  <div class="brand"><img src="/static/niftipay-logo.svg" alt="Niftipay" class="logo"><span>Partners</span></div>
   <input id="search" type="search" placeholder="Search docs…" autocomplete="off">
   <button id="theme-toggle" aria-label="Toggle theme">◐</button>
 </header>
@@ -93,6 +114,11 @@ function buildToc(html) {
 rmSync(DIST, { recursive: true, force: true });
 mkdirSync(DIST, { recursive: true });
 const pages = walk(CONTENT);
+for (const file of pages) {
+  const { fm } = parseFrontMatter(readFileSync(file, "utf8"));
+  const rel = relative(CONTENT, file).replace(/\.md$/, "");
+  pageTitles.set(rel, fm.title || rel);
+}
 const searchIndex = [];
 for (const file of pages) {
   const src = readFileSync(file, "utf8");
