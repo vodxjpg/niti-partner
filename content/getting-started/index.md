@@ -11,7 +11,7 @@ documents every partner endpoint.
 ## Base URL
 
 ```
-https://api.niftipay.com
+https://www.niftipay.com/api/v1/partner
 ```
 
 All paths below are relative to that base. The current API version is
