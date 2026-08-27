@@ -51,4 +51,5 @@ No request body.
 
 | Status | code                | Meaning                                  |
 |--------|---------------------|------------------------------------------|
-| 404    | not_found           | Customer is not yours / relationship missing. |
+| 403    | insufficient_scope  | Token was not minted with `documents:read`.   |
+| 404    | resource_not_found  | Customer is not yours / relationship missing. |
