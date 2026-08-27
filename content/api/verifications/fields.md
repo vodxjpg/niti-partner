@@ -4,6 +4,10 @@ section: API Reference / Verifications
 ---
 # KYB field reference
 
+> Building a form from this? [`GET /onboarding/schema`](/api/onboarding-schema.html)
+> returns the same contract as JSON, with the enums inline — render from that
+> rather than transcribing this page.
+
 Every enum, every required field, and the rules that are only enforced at
 submission. [Create a verification](/api/verifications/create.html) accepts
 partial data — this page is what "complete" means.

@@ -13,6 +13,8 @@
         { "group": "Verifications", "pages": ["api/verifications/create", "api/verifications/fields", "api/verifications/list", "api/verifications/retrieve"] },
         { "group": "Documents", "pages": ["api/documents/upload", "api/documents/list", "api/documents/download"] },
         { "group": "Agreements", "pages": ["api/agreements/list", "api/agreements/accept"] },
+        { "group": "Requirements", "pages": ["api/requirements/list"] },
+        "api/onboarding-schema",
         "api/capabilities",
         "api/webhooks"
     ]},

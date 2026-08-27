@@ -4,6 +4,10 @@ section: API Reference / Verifications
 ---
 # Create a verification
 
+> After submission, anything still outstanding arrives as a
+> [requirement](/api/requirements/list.html) rather than a rejection of the whole
+> case.
+
 <span class="badge post">POST</span> `/api/v1/partner/customers/{customerId}/verifications`
 
 > Required scope: `kyb:write`.
