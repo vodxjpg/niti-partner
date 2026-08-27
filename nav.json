@@ -18,6 +18,6 @@
         "api/capabilities",
         "api/webhooks"
     ]},
-    { "group": "Guides", "pages": ["guides/quickstart", "guides/integration-models"] }
+    { "group": "Guides", "pages": ["guides/quickstart", "guides/fiat-lifecycle", "guides/crypto-lifecycle", "guides/integration-models"] }
   ]
 }

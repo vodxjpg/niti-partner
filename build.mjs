@@ -99,7 +99,7 @@ function layout({ title, section, body, current, toc }) {
 </head>
 <body>
 <header class="topbar">
-  <div class="brand"><img src="/static/niftipay-logo.svg" alt="Niftipay" class="logo"><span>Partners</span></div>
+  <a class="brand" href="/getting-started/index.html"><img src="/static/niftipay-light.svg" alt="Niftipay" class="logo logo-light"><img src="/static/niftipay-dark.svg" alt="" aria-hidden="true" class="logo logo-dark"><span>Partners</span></a>
   <input id="search" type="search" placeholder="Search docs…" autocomplete="off">
   <button id="theme-toggle" aria-label="Toggle theme">◐</button>
 </header>

@@ -19,6 +19,11 @@ All paths below are relative to that base. The current API version is
 
 ## Before you start
 
+**Start here if you are integrating:** the two end-to-end walkthroughs cover
+every call in order — [Card payments](/guides/fiat-lifecycle.html) and
+[Crypto payments](/guides/crypto-lifecycle.html). The reference pages below
+document each endpoint on its own; the guides put them in sequence.
+
 1. Obtain a partner API key (see [Authentication](/getting-started/authentication.html)).
 2. Understand [idempotency](/getting-started/idempotency.html) — every write
    requires an `Idempotency-Key`.

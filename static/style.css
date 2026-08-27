@@ -68,3 +68,14 @@ th { background: var(--code-bg); }
 .page-actions .md-copy:hover { color: var(--text, #111); border-color: var(--text, #111); }
 .page-actions .md-copy[data-state="done"] { color: #2f9e6f; border-color: #2f9e6f; }
 @media (max-width: 720px) { .page-actions { justify-content: flex-start; } }
+
+/* Theme-aware wordmark.
+ *
+ * Both are in the DOM and CSS picks one, rather than swapping src in JS: the
+ * theme is applied from localStorage before paint, so a JS swap would show the
+ * wrong mark for a frame on every load. The second copy is aria-hidden — it is
+ * the same word, and a screen reader should hear it once. */
+.brand .logo-dark { display: none; }
+[data-theme="dark"] .brand .logo-light { display: none; }
+[data-theme="dark"] .brand .logo-dark { display: inline; }
+.brand { text-decoration: none; color: inherit; }
