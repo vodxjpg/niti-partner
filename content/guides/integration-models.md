@@ -321,7 +321,9 @@ Stated here so you meet them on this page rather than mid-build:
 - No conditional fields.
 - No document delete — uploads append.
 - No withdrawal-wallet delete — the allowlist only grows.
-- No pagination cursors; list endpoints return a single clamped page.
+- Cursor paging exists on [crypto orders](/api/crypto-orders/list.html) only
+  (`?before=`, `next_cursor`). Every other list endpoint returns a single
+  clamped page.
 - Reviewer notes are never exposed. Rejection reasons are a coarse closed list.
 
 If one of these blocks you, say which. Several of them are contained work and

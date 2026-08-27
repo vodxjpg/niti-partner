@@ -155,6 +155,11 @@ Note the shape difference from the card rail: a crypto order is read by its
 **uuid** at `/orders/{orderId}`, while a fiat order is read by its short integer
 `order_key` at `/fiat-orders/{orderKey}`.
 
+To reconcile rather than follow one order, page the customer's orders newest
+first — [List crypto orders](/api/crypto-orders/list.html). It is the only
+partner list endpoint with a real cursor: page on `next_cursor` until it comes
+back `null`.
+
 `status` runs `pending` → `confirmed`, or `expired`. An underpayment is its own
 state rather than a silent failure.
 

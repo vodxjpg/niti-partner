@@ -7,6 +7,51 @@ section: API Reference
 Niftipay pushes partner-relevant events to the webhook URL configured on the
 integration. Each delivery is a signed `POST`.
 
+## Reading your subscription
+
+<span class="badge get">GET</span> `/api/v1/partner/webhooks`
+
+> Required scope: `partner:read`. No customer in the path — this is your own
+> configuration, not a customer's.
+
+Answers "am I subscribed, and to what" without a support ticket. Everything it
+returns is a fact you supplied.
+
+```bash
+curl https://www.niftipay.com/api/v1/partner/webhooks \
+  -H "Authorization: Bearer <partner_api_key>"
+```
+
+### Response `200`
+```json
+{ "request_id": "req-1", "api_version": "2026-08-01",
+  "data": {
+    "webhooks": [
+      { "webhook_id": "wh_3f9a2c10",
+        "url": "https://you.example.com/hooks/niftipay",
+        "event_types": ["verification.approved", "payment.confirmed"],
+        "status": "active",
+        "created_at": "2026-08-01T10:00:00.000Z" }
+    ],
+    "available_event_types": ["customer.updated", "verification.pending", "..."],
+    "signature": { "algorithm": "hmac-sha256", "header": "x-signature",
+                   "format": "v1=<hex>",
+                   "signed_payload": "<x-timestamp>.<raw request body>" }
+  } }
+```
+
+**An empty `event_types` means every type.** That rule is resolved server-side,
+so what you read back is the explicit list — you never have to reimplement it.
+
+**The signing secret is never returned.** A partner that has lost it needs a
+rotation, not a lookup; an endpoint that hands back secrets to anyone holding a
+token would undo the reason registration is staff-operated.
+
+### Registration is staff-operated
+
+There is no `POST` here. Destinations and event subscriptions are set up by
+Niftipay — ask, and read the result back through this endpoint.
+
 ## Verifying a webhook
 
 Every delivery carries two headers you must check before trusting the body:
@@ -47,6 +92,8 @@ The events Niftipay can emit today:
 - `agreement.accepted`
 - `document.reviewed`
 - `capability.updated`
+- `requirement.created`
+- `requirement.resolved`
 - `payment.confirmed`
 - `payment.expired`
 

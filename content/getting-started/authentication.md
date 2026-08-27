@@ -32,6 +32,10 @@ re-obtain) the JWT:
 
 ## Obtaining the JWT (client_credentials)
 
+<span class="badge post">POST</span> `/api/oauth/token`
+
+> No scope, and no `Authorization` header — this is the endpoint that mints one.
+
 Exchange your client credentials for a JWT using the OAuth `client_credentials`
 grant:
 
@@ -48,6 +52,8 @@ curl -X POST https://www.niftipay.com/api/oauth/token \
 
 The token response uses the same envelope as every other endpoint — the token
 is at `data.access_token`, **not** at the top level:
+
+### Response `200`
 
 ```json
 { "data": { "access_token": "<jwt>", "expires_in": 300, "token_type": "bearer" },

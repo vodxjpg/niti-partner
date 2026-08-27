@@ -172,6 +172,13 @@ export function buildOpenApi(pages, { version }) {
 
       if (scopes.length) op["x-required-scopes"] = scopes;
 
+      // The token endpoint is the one operation that must NOT inherit the
+      // document-level bearer requirement: it is what mints the bearer. A
+      // generated client that sends `Authorization` here has nothing to send
+      // yet. Keyed off the path prefix rather than a per-page flag, so any
+      // future non-partner endpoint gets the same treatment for free.
+      if (!path.startsWith("/api/v1/partner")) op.security = [];
+
       if ((method === "post" || method === "patch" || method === "put") && requestExample) {
         op.requestBody = {
           required: true,
