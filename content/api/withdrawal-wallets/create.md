@@ -6,7 +6,16 @@ section: API Reference / Withdrawal Wallets
 
 <span class="badge post">POST</span> `/api/v1/partner/customers/{customerId}/withdrawal-wallets`
 
-Adds a destination to the customer's withdrawal allowlist. The signature requirement makes this the real control that the withdrawal signature protects.
+> Required scope: `withdrawals:write`, plus the `withdrawals` capability — which
+> is KYB-gated, so it turns on when the customer's verification is approved.
+
+Adds a destination to the customer's withdrawal allowlist.
+
+This is the endpoint the signature really protects. A withdrawal can only send
+to an address already on the allowlist, so an attacker holding just your bearer
+token cannot move funds anywhere new — adding a destination needs the signature
+too. Needs both an `Idempotency-Key` and an `X-Withdrawal-Signature`; see
+[Signing withdrawals](/getting-started/withdrawal-signing.html).
 
 ## Request
 

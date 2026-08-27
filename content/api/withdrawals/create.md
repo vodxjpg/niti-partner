@@ -6,7 +6,18 @@ section: API Reference / Withdrawals
 
 <span class="badge post">POST</span> `/api/v1/partner/customers/{customerId}/withdrawals`
 
-Sends crypto from the customer's wallet to a registered destination. Requires an idempotency key and a withdrawal signature.
+> Required scope: `withdrawals:write`, plus the `withdrawals` capability — which
+> is KYB-gated, so it turns on when the customer's verification is approved.
+
+Sends crypto from the customer's wallet to a registered destination.
+
+Needs **both** an `Idempotency-Key` and an `X-Withdrawal-Signature`. See
+[Signing withdrawals](/getting-started/withdrawal-signing.html) for how to build
+the assertion — it is the same construction for both money-out endpoints.
+
+Register the destination with
+[Register a withdrawal wallet](/api/withdrawal-wallets/create.html) first; `to`
+must match one that already exists for this customer.
 
 ## Request
 
