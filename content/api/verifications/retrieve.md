@@ -4,24 +4,25 @@ section: API Reference / Verifications
 ---
 # Retrieve a verification
 
-<span class="badge get">GET</span> `/api/v1/partner/customers/{customerId}/verifications`
+<span class="badge get">GET</span> `/api/v1/partner/customers/{customerId}/verifications/{verificationId}`
 
 > Required scope: `kyb:read` (global tier).
 
-> **Non-obvious rule — no per-id route exists yet.** The live
-> `coinx-fiat` route only implements `GET /verifications` (a customer has exactly
-> one KYB case). There is **no** `…/verifications/{verificationId}` path segment
-> in the source; the case id is the `verification_id` returned in the list/POST
-> responses. Use the path shown above to fetch the customer's case. This page
-> documents that response; treat `verification_id` as a returned field, not a path
-> parameter.
+Returns one KYB case and its status-transition history.
 
-Returns the customer's KYB case and its status-transition history.
+A customer has exactly **one** KYB case, so this and
+[List verifications](/api/verifications/list.html) return the same case — the
+list wraps it in an array, this returns it directly. Use whichever fits how you
+stored it: the list if you only kept the customer id, this if you kept the
+`verification_id`.
+
+> Earlier revisions of this page noted that no per-id route existed and told you
+> to use the collection instead. It exists now. The collection has not changed.
 
 ## Request
 
 ```bash
-curl -X GET https://www.niftipay.com/api/v1/partner/customers/pc-1/verifications \
+curl -X GET https://www.niftipay.com/api/v1/partner/customers/pc-1/verifications/app-1 \
   -H "Authorization: Bearer <partner_api_key>"
 ```
 
@@ -32,7 +33,7 @@ No request body.
 ```json
 { "request_id": "req-1", "api_version": "2026-08-01",
   "data": {
-    "verifications": [
+    "verification":
       { "verification_id": "app-1", "partner_customer_id": "pc-1", "type": "kyb",
         "status": "approved", "submitted_at": "2026-08-10T10:00:00.000Z",
         "verified_at": "2026-08-12T14:08:00.000Z", "valid_until": null,
@@ -45,20 +46,37 @@ No request body.
                         "registered_city": null, "registered_postal_code": null,
                         "registered_country": null, "incorporation_country": null,
                         "incorporation_date": null, "business_registration_country": null },
-        "directors": [], "ubos": [] } ],
+        "directors": [], "ubos": [] },
     "history": [
       { "status": "kyb_submitted", "occurred_at": "2026-08-10T10:00:00.000Z" },
       { "status": "kyb_approved", "occurred_at": "2026-08-12T14:08:00.000Z" } ] } }
 ```
+
+Note the shape difference from the collection: `verification` (an object) rather
+than `verifications` (an array). `history` is identical in both.
 
 `status` is one of `unverified` | `pending` | `approved` | `rejected`. `expired` is
 never returned; a past-due case shows `valid_until: null`. `history` carries only
 the transition status and its timestamp — reviewer notes and reason codes are
 withheld.
 
+## Every miss is the same `404`
+
+Three different situations answer identically:
+
+- no verification has been started for this customer
+- a case exists and `verificationId` names a different one
+- `verificationId` is another merchant's real case
+
+The third is why the first two share its wording. Distinguishing it would confirm
+that a case id exists and belongs to somebody, which is the merchant discovery
+the relationship guard exists to prevent. The case is resolved from the
+**relationship**, and the id you supply is only ever compared against it.
+
 ## Errors
 
-| Status | code                | Meaning                                         |
-|--------|---------------------|-------------------------------------------------|
-| 404    | resource_not_found  | No verification has been started for this customer. |
-| 404    | not_found           | Customer is not yours / relationship missing.    |
+| Status | code                    | Meaning                                              |
+|--------|-------------------------|------------------------------------------------------|
+| 403    | insufficient_scope      | Token was not minted with `kyb:read`.                |
+| 404    | resource_not_found      | No such case on this customer — see above.           |
+| 503    | temporarily_unavailable | Transient database failure. Retry.                   |
