@@ -6,6 +6,8 @@ section: API Reference / Withdrawals
 
 <span class="badge get">GET</span> `/api/v1/partner/customers/{customerId}/withdrawals`
 
+> Required scope: `withdrawals:read`.
+
 Returns the customer's recent withdrawals, newest first. Reading history does not require the merchant to be currently eligible to transact.
 
 ## Request

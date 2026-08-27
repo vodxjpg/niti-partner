@@ -6,6 +6,8 @@ section: API Reference / Wallets
 
 <span class="badge get">GET</span> `/api/v1/partner/customers/{customerId}/wallets`
 
+> Required scope: `wallets:read`.
+
 Returns the customer's master wallet addresses and balances across all chains.
 
 ## Request

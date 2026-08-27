@@ -6,6 +6,8 @@ section: API Reference / Wallets
 
 <span class="badge post">POST</span> `/api/v1/partner/customers/{customerId}/wallets`
 
+> Required scope: `wallets:write`.
+
 Provisions the customer's persistent master wallet addresses, one per chain (BTC, ETH, LTC, SOL, XRP, TRON) on mainnet, and returns them. Call this once per customer; it is idempotent per chain.
 
 ## Request

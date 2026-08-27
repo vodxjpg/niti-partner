@@ -6,6 +6,8 @@ section: API Reference / Customers
 
 <span class="badge get">GET</span> `/api/v1/partner/customers`
 
+> Required scope: `customers:read`.
+
 Returns the partner's customers (cursor-paginated).
 
 ```bash

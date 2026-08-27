@@ -6,6 +6,8 @@ section: API Reference / Withdrawal Wallets
 
 <span class="badge get">GET</span> `/api/v1/partner/customers/{customerId}/withdrawal-wallets`
 
+> Required scope: `withdrawals:read`.
+
 Returns the customer's registered withdrawal destinations (the allowlist). Reading the allowlist does not require the merchant to be currently eligible to transact.
 
 ## Request

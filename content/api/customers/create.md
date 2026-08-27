@@ -6,6 +6,8 @@ section: API Reference / Customers
 
 <span class="badge post">POST</span> `/api/v1/partner/customers`
 
+> Required scope: `customers:write`.
+
 Links a partner's external customer to the merchant ledger.
 
 ## Request

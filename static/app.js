@@ -25,3 +25,24 @@ document.querySelectorAll("#content pre").forEach((pre) => {
   });
   pre.appendChild(btn);
 });
+// Copy the page's raw Markdown. Partners paste it into a model, and Markdown
+// survives that where scraped HTML arrives full of nav chrome and lost fences.
+document.addEventListener("click", async (e) => {
+  const btn = e.target.closest(".md-copy");
+  if (!btn) return;
+  const label = btn.textContent;
+  try {
+    const res = await fetch(btn.dataset.md);
+    if (!res.ok) throw new Error(String(res.status));
+    await navigator.clipboard.writeText(await res.text());
+    btn.textContent = "Copied";
+    btn.dataset.state = "done";
+  } catch {
+    // No clipboard permission, or offline. Say so rather than looking successful.
+    btn.textContent = "Copy failed";
+  }
+  setTimeout(() => {
+    btn.textContent = label;
+    delete btn.dataset.state;
+  }, 1600);
+});

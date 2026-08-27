@@ -6,6 +6,8 @@ section: API Reference / Customers
 
 <span class="badge get">GET</span> `/api/v1/partner/customers/{customerId}`
 
+> Required scope: `customers:read`.
+
 ```bash
 curl https://www.niftipay.com/api/v1/partner/customers/pc-1 \
   -H "Authorization: Bearer <partner_api_key>"

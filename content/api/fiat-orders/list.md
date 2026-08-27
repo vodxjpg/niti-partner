@@ -6,6 +6,8 @@ section: API Reference / Fiat Orders
 
 <span class="badge get">GET</span> `/api/v1/partner/customers/{customerId}/fiat-orders`
 
+> Required scope: `payments:read`.
+
 Returns only orders minted by **this** partner relationship. A partner can
 never see another partner's orders (they share the merchant's `userId`).
 
