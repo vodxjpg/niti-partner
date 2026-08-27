@@ -18,6 +18,6 @@
         "api/capabilities",
         "api/webhooks"
     ]},
-    { "group": "Guides", "pages": ["guides/quickstart"] }
+    { "group": "Guides", "pages": ["guides/quickstart", "guides/temble-integration"] }
   ]
 }
