@@ -34,7 +34,7 @@ process asynchronously — a slow handler is retried as if it failed.
 }
 ```
 
-`event_id` is unique per delivery; use it to dedupe. The `data` field carries
+`event_id` identifies the EVENT, not the attempt — see *Dedupe* below. The `data` field carries
 only identifiers and status — never raw documents or PII. Re-read detail through
 the API where scopes still apply.
 
@@ -56,6 +56,30 @@ Failed deliveries are retried up to six times with exponential backoff:
 1m, 5m, 25m, 2h, 10h, 24h. A `2xx` response ends delivery; a non-retryable
 `4xx` is dead-lettered; a `5xx` or network timeout is retried on the schedule
 above. Use `event_id` to dedupe across retries.
+
+## Dedupe
+
+`event_id` is generated **once per event** and stored with the delivery, so
+every retry of that delivery carries the same value and the same body. Treating
+it as an idempotency key is correct.
+
+Earlier revisions of this page called it "unique per delivery", which
+contradicted the sentence above it. It is unique per event; the delivery attempt
+is not separately identified on the wire.
+
+One consequence worth designing for: if you register **more than one**
+destination, an event fans out to all of them carrying the **same** `event_id`.
+Dedupe per destination, or accept that two endpoints will see the same id.
+
+## Clock skew
+
+`x-timestamp` is regenerated on **every attempt**, not once per event, so your
+tolerance only has to cover network transit and clock drift — never the retry
+backoff, which reaches 24 hours.
+
+We do not mandate a window; you are the verifier and it is your call. **±300
+seconds is a sensible default** and is what we would pick. Anything under ±60s
+starts rejecting deliveries over ordinary NTP drift.
 
 > Webhooks are delivered only for the customers this partner onboarded, and only
 > to destinations it supplied. A partner never receives another partner's events.

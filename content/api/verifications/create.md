@@ -34,7 +34,7 @@ curl -X POST https://www.niftipay.com/api/v1/partner/customers/pc-1/verification
 | `business.legal_name`                    | string          | no       | Mapped to `companyName`.                                     |
 | `business.trading_name`                  | string          | no       |                                                              |
 | `business.website`                       | string          | no       |                                                              |
-| `business.industry`                      | string          | no       | Enum from onboarding schema.                                 |
+| `business.industry`                      | string          | no       | Enum — see [KYB field reference](/api/verifications/fields.html).                                 |
 | `business.registration_number`           | string          | no       |                                                              |
 | `business.registered_address`            | object          | no       | `{ line1, line2, city, postal_code, country }`.              |
 | `business.incorporation_country`         | string          | no       |                                                              |
