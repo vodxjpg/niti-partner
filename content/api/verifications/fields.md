@@ -53,10 +53,17 @@ A **band, not a number**. Sending `50000` is `422`.
 `certificate_of_incorporation` · `proof_of_address` · `director_id` ·
 `bank_statement` · `processing_statement`
 
-Upload them with
-[Upload a document](/api/documents/upload.html). Uploads **append**, and
-submission takes the latest of each type — so replacing a rejected document
-means uploading a new one of the same type, not deleting anything.
+Upload them with [Upload a document](/api/documents/upload.html).
+
+**There is no delete.** Uploads append, and submission takes the **latest of
+each type** — so replacing a rejected document means uploading a new one of the
+same type, and the old one stays in the record. That is deliberate: evidence
+that was reviewed is part of the audit trail, and a partner able to remove it
+could quietly rewrite what a decision was made on.
+
+Practically: never wait for a delete that is not coming, and do not treat a
+second upload of the same type as an error. It is the supported way to correct
+one.
 
 While any are missing, `POST /verifications` answers `200` with
 `"blocked_by": "missing_documents"` and lists exactly which in
@@ -86,12 +93,26 @@ A UBO carries one extra field:
 **Percentages do not have to total 100.** There is no sum check. The 25% floor
 is the whole rule — a UBO *is* a 25%-or-more shareholder, so anyone below that
 threshold is not a UBO and should not be listed. A company whose ownership is
-spread across five 20% holders therefore has no UBOs to report, and cannot
-currently be submitted (see below).
+spread across five 20% holders therefore has no UBOs to report — see the next
+rule for how to say so.
 
-**"No UBO" is not supported.** At least one UBO and at least one director are
-required at submission. If a structure genuinely has none — a foundation, a
-widely-held company — contact us rather than inventing an entry.
+**A company with no qualifying UBO declares it.** If nobody holds 25% or more —
+five 20% holders, a foundation, a widely-held entity — send:
+
+```json
+{ "ubos": [], "ubo_declaration": "no_qualifying_ubo" }
+```
+
+`ubo_declaration` is `has_ubos` by default, and that default is what requires at
+least one UBO. It is a **declaration, not an inference from an empty list**: "not
+filled in yet" and "genuinely nobody" are different facts, and a file that cannot
+tell them apart is worth nothing to the reviewer. Declaring none *and* listing
+someone is refused as the contradiction it is.
+
+At least one **director** is required either way — with no UBO to report, the
+senior managing officials are what the file rests on.
+
+The value is returned on reads as `ubo_declaration`, beside `ubos`.
 
 **Overlap is allowed and expected.** `directors` and `ubos` are independent
 lists with no cross-check and no deduplication. A founder who is both a director
@@ -109,7 +130,7 @@ be present before the case leaves draft:
 | Registered address | `line1`, `city`, `postal_code`, `country` |
 | Contact | `first_name`, `last_name`, `email` (must be a valid email) |
 | Commercial | `expected_monthly_processing_volume`, `card_type`, `settlement_option`, `fee_handling`, `requested_payment_methods` (≥1) |
-| People | `directors` (≥1), `ubos` (≥1) |
+| People | `directors` (≥1); `ubos` (≥1) **unless** `ubo_declaration` is `no_qualifying_ubo` |
 | Consent | `consent.version` |
 | Evidence | all five document types |
 
@@ -134,7 +155,8 @@ submission and tells you what stopped it:
             "submitted": false,
             "blocked_by": "validation_failed",
             "missing_documents": [],
-            "incomplete_fields": [ { "path": ["ubos"], "message": "At least one UBO is required" } ] } }
+            "incomplete_fields": [ { "path": ["ubos"],
+                                     "message": "At least one UBO is required, or declare uboDeclaration = no_qualifying_ubo if no person holds 25% or more" } ] } }
 ```
 
 So the integration loop is: send what you have, read `incomplete_fields` and

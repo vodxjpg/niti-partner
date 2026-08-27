@@ -57,6 +57,13 @@ Failed deliveries are retried up to six times with exponential backoff:
 `4xx` is dead-lettered; a `5xx` or network timeout is retried on the schedule
 above. Use `event_id` to dedupe across retries.
 
+## `verification.rejected` carries a reason
+
+Its `data` includes `rejection_reason` — one of the closed list documented in
+[Retrieve a verification](/api/verifications/retrieve.html), or `null` when we
+were not given one. It is the only thing that lets you tell a merchant what to
+fix without a support ticket.
+
 ## Dedupe
 
 `event_id` is generated **once per event** and stored with the delivery, so

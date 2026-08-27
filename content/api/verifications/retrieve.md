@@ -60,6 +60,32 @@ never returned; a past-due case shows `valid_until: null`. `history` carries onl
 the transition status and its timestamp — reviewer notes and reason codes are
 withheld.
 
+## Why a case was rejected
+
+When `status` is `rejected`, `rejection_reason` carries one of a closed list.
+It is `null` on every other status, and `null` on a rejection we were given no
+reason for — absent rather than guessed.
+
+| Reason | What the merchant should do |
+|---|---|
+| `documents_illegible` | Re-upload clearer scans. |
+| `documents_missing` | Something required was absent or unreadable. |
+| `documents_expired` | Provide current versions. |
+| `industry_not_accepted` | The declared industry cannot be onboarded. Not fixable by resubmitting. |
+| `entity_unverifiable` | The company could not be matched in the registry. Check the legal name and registration number. |
+| `ownership_unclear` | The director/UBO structure did not reconcile. |
+| `sanctions_or_pep` | A screening hit. Contact us; do not resubmit. |
+| `duplicate_application` | This entity already exists on Niftipay. |
+| `other` | A reason outside the list. Contact us with the `verification_id`. |
+
+The same value arrives on the `verification.rejected` webhook, so listening and
+polling agree. Reviewer notes are **not** exposed on any surface — the list is
+deliberately coarse, and free text is never forwarded.
+
+For a rejected **document** rather than a whole case, `document.reviewed` and
+[List documents](/api/documents/list.html) carry a per-document
+`rejection_reason` with more detail.
+
 ## Every miss is the same `404`
 
 Three different situations answer identically:

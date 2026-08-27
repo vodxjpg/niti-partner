@@ -44,6 +44,7 @@ curl -X POST https://www.niftipay.com/api/v1/partner/customers/pc-1/verification
 | `commercial`                             | object          | no       | `{ expected_monthly_processing_volume, card_type, settlement_option, fee_handling, requested_payment_methods[] }`. |
 | `directors`                              | array (≤20)     | no       | Each: `{ full_name, date_of_birth, nationality, country?, email?, phone?, address_line1?, city?, postal_code? }`. |
 | `ubos`                                   | array (≤20)     | no       | Person fields + `ownership_percent` (number 25–100).         |
+| `ubo_declaration`                        | string          | no       | `has_ubos` (default) or `no_qualifying_ubo` — see [KYB field reference](/api/verifications/fields.html). |
 | `consent`                                | object          | no       | `{ version?, marketing_opt_in? }`.                           |
 
 Omitting a field leaves its stored value untouched; an explicit `null` clears it.
