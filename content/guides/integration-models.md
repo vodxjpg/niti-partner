@@ -22,9 +22,9 @@ usually arrive.
 | Can you reopen onboarding after submission? | **Yes** — built for it. |
 | Can you ask for something specific post-submission? | **Yes** — [requirements](/api/requirements/list.html). |
 | Can you render fields from *our* schema? | **No.** Ours is fixed. We publish it instead. |
-| Dynamic / custom / conditional fields? | **No.** |
+| Dynamic fields? | **We carry yours, we do not render them.** |
 | Repeating groups? | **Yes**, fixed shape — `directors[]`, `ubos[]`. |
-| Partner-defined document types? | **No.** Five fixed types. |
+| Partner-defined document types? | **Unnamed ones, yes** — upload as `other`. |
 
 The rest of this page is why, and what to do about each.
 
@@ -215,15 +215,21 @@ See [Onboarding schema](/api/onboarding-schema.html).
 
 | Concept | Niftipay | Detail |
 |---|---|---|
-| Dynamic fields | ✗ | Fixed schema. Unknown keys are `422`, not stored. |
-| Custom fields | ✗ | No custom-field bag anywhere. |
+| Fields we render for you | ✗ | No form engine. This is the part that stays no. |
+| **Fields you carry** | **✓** | [`additional_data`](/api/verifications/fields.html) — your own keys on the case. We store, return and relay them; we never render or interpret them. |
 | Conditional fields | ✗ | No "show B if A" rules exist to express. |
 | **Repeating groups** | **✓** | `directors[]`, `ubos[]`, max 20 each. Fixed element shape — more people, never more fields. |
-| Dynamic document requirements | **partly** | A requirement can ask for a document, but `document_type` is one of five fixed types. You cannot define a sixth. |
+| **Unnamed documents** | **✓** | A [requirement](/api/requirements/list.html) can ask for a document with no `document_type`; the merchant uploads it as `other`. |
 
-Need a field we do not have? Map it onto an existing one, keep it on your side,
-or ask us to add it — a schema change with a `schema_version` bump, not a
-runtime one.
+So the honest line is not "no dynamic fields" — it is **we will carry your
+fields, we will not render them**. That distinction is the whole of it: you
+collected the values in your own UI, from your own user, under your own privacy
+notice. Rendering partner-authored fields to our merchants under our logo is a
+GDPR and phishing question before it is an engineering one, and it is why that
+row stays ✗.
+
+Need a field in the *core* schema rather than your own bag? Ask — a schema
+change with a `schema_version` bump, not a runtime one.
 
 ### Our field set, in brief
 
@@ -311,7 +317,8 @@ Stated here so you meet them on this page rather than mid-build:
 
 - No hosted merchant onboarding UI to hand off to.
 - No per-partner outbound API client (webhooks only).
-- No dynamic, custom or conditional fields; no partner-defined document types.
+- No form engine: we will not render partner-defined fields to merchants.
+- No conditional fields.
 - No document delete — uploads append.
 - No withdrawal-wallet delete — the allowlist only grows.
 - No pagination cursors; list endpoints return a single clamped page.

@@ -32,7 +32,13 @@ curl -X POST https://www.niftipay.com/api/v1/partner/customers/pc-1/documents \
 | `file_name`     | no       | Overrides the uploaded part's filename. Basename only — directory segments are stripped. |
 
 **`document_type`** — `certificate_of_incorporation` · `proof_of_address` ·
-`director_id` · `bank_statement` · `processing_statement`
+`director_id` · `bank_statement` · `processing_statement` · `other`
+
+`other` is for evidence with no name of its own — a shareholder register, a
+licence, a bank letter — usually in response to a
+[requirement](/api/requirements/list.html) that asked for one. It is accepted on
+upload and is **not** required at submit, so uploading one never changes what
+completeness means.
 
 **Content type** must be `application/pdf`, `image/jpeg` or `image/png`.
 Anything else is `415`.

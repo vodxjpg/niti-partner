@@ -123,6 +123,39 @@ lists with no cross-check and no deduplication. A founder who is both a director
 and a 100% shareholder belongs in **both** arrays, with the same details. We do
 not infer one from the other.
 
+## Your own fields
+
+Our schema is fixed, and fields outside it are `422`. If your underwriting needs
+values we do not have, send them in `additional_data`:
+
+```json
+{ "business": { "legal_name": "Example SL" },
+  "additional_data": {
+    "entity_type": "sarl",
+    "regulated_since": 2019,
+    "markets": ["FR", "BE"]
+  } }
+```
+
+We **store, return and relay** them. We never render or interpret them — you
+collected them in your own UI, from your own user, under your own privacy
+notice, and that is what keeps this simple for both of us.
+
+| Rule | |
+|---|---|
+| Scope | Yours alone. Another partner on the same merchant cannot read your keys, and you cannot read theirs. |
+| Values | string · number · boolean · null · or an array of those |
+| Nesting | **Not accepted.** Flatten the key instead — `owner_name`, not `owner: { name }`. |
+| Limits | 50 keys · 100 chars per key · 2000 chars per string · 50 items per array |
+| Writing | Merged, not replaced. Send `null` for a key to clear it; omit it to leave it alone. |
+| Over-long values | **Refused, never truncated** — a shortened answer means you believe your underwriter has a value it does not have. |
+
+Returned on `GET /verifications` as `additional_data`, containing your slice
+only.
+
+The nesting limit is the boundary that keeps this a *field bag* rather than a
+document store. If you need structure, flatten.
+
 ## Required at submission
 
 A verification can be created and updated with any subset. These are what must

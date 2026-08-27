@@ -58,10 +58,28 @@ still be replaced through the normal upload path.
 |---|---|
 | `kind` | `document` · `field` · `clarification` |
 | `target` | **Your** vocabulary — `ubo:1`, `director:0`, `field:registration_number`. Opaque to us: the party that raised it is the party that knows what it points at. |
-| `document_type` | Only when `kind` is `document`. One of the five upload types. |
+| `document_type` | Only when `kind` is `document`, and **optional**. One of the five named types, or omit it — see below. |
 | `message` | What the merchant is shown. Max 500 characters, rejected rather than truncated. |
 | `raised_by` | `you` · `partner` · `niftipay`. Never another partner's client id — which competitor also serves this merchant is not your business. |
 | `due_at` | Optional ISO-8601. Advisory; nothing enforces it. |
+
+## Asking for a document we have no name for
+
+`document_type` is optional. Omit it and the requirement is simply "a document",
+described by your `message`:
+
+```json
+{ "kind": "document",
+  "target": "company",
+  "message": "Shareholder register, dated within 3 months" }
+```
+
+The merchant uploads it with `document_type: "other"`.
+
+`other` is accepted **on upload** and is never **required at submit** — the five
+named types are what submission checks for, and adding a sixth there would make
+it mandatory for every merchant on the platform. So an `other` document satisfies
+your requirement without changing what completeness means.
 
 ## Statuses, and who may set them
 
