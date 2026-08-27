@@ -47,10 +47,19 @@ converts to less than that is refused, whatever the asset. The default is no
 minimum, so most merchants have none — but the ones that do can set it high
 (€300 is a real value in production).
 
-You cannot read it through this API. Today the refusal arrives as a generic
-`400 withdrawal_refused`, so if a withdrawal is refused for no visible reason
-and the amount is small, that is the first thing to suspect. Quote the
-`request_id` and we can tell you the threshold.
+There is no endpoint that reports it, so the refusal carries it instead:
+
+```json
+{ "error": { "code": "below_minimum",
+             "message": "The amount is below the minimum withdrawal this merchant is configured for. See `details[0].minimum_eur`.",
+             "request_id": "req-1",
+             "details": [ { "minimum_eur": 300 } ] } }
+```
+
+`minimum_eur` is the threshold in euros. Compare your gross against it and
+retry with a larger amount — this is a refusal you can act on without contacting
+anyone. It is absent, rather than null, on the rare occasion we cannot read a
+number, so you can tell "we did not say" from a value you can use.
 
 ## Response `201`
 
@@ -83,7 +92,8 @@ and the amount is small, that is the first thing to suspect. Quote the
 `400 amount_too_small` when the amount is consumed by gas and fees.
 `400 unsupported_asset` when the asset is unsupported on the chain.
 `400 invalid_amount` when `amount` is not a valid positive number.
-`400 withdrawal_refused` for any other service refusal not in the mapped set — including a gross below the merchant's configured EUR minimum (see above).
+`409 below_minimum` when the gross is under the merchant's configured EUR minimum; `details[0].minimum_eur` carries the threshold.
+`400 withdrawal_refused` for any other service refusal not in the mapped set.
 `503 temporarily_unavailable` on a 5xx from the service or a transport failure (reservation is kept so a retry is safe).
 `500 internal_error` for permanent unclassified failures.
 `409 idempotency_key_reuse` when the same key is reused with a different body.
