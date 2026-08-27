@@ -7,7 +7,7 @@ section: API Reference / Customers
 <span class="badge get">GET</span> `/api/v1/partner/customers/{customerId}`
 
 ```bash
-curl https://api.niftipay.com/api/v1/partner/customers/pc-1 \
+curl https://www.niftipay.com/api/v1/partner/customers/pc-1 \
   -H "Authorization: Bearer <partner_api_key>"
 ```
 

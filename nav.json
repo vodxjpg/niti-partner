@@ -4,6 +4,7 @@
     { "group": "Getting Started", "pages": ["getting-started/index", "getting-started/authentication", "getting-started/idempotency", "getting-started/errors"] },
     { "group": "API Reference", "pages": [
         { "group": "Customers", "pages": ["api/customers/create", "api/customers/list", "api/customers/retrieve"] },
+        { "group": "Fiat Integrations", "pages": ["api/fiat-integrations/list", "api/fiat-integrations/create", "api/fiat-integrations/retrieve", "api/fiat-integrations/update", "api/fiat-integrations/delete"] },
         { "group": "Fiat Orders", "pages": ["api/fiat-orders/create", "api/fiat-orders/list", "api/fiat-orders/retrieve"] },
         { "group": "Crypto Orders", "pages": ["api/crypto-orders/create", "api/crypto-orders/retrieve"] },
         { "group": "Wallets", "pages": ["api/wallets/create", "api/wallets/list"] },

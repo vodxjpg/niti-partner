@@ -36,7 +36,7 @@ Exchange your client credentials for a JWT using the OAuth `client_credentials`
 grant:
 
 ```bash
-curl -X POST https://api.niftipay.com/api/oauth/token \
+curl -X POST https://www.niftipay.com/api/oauth/token \
   -H "Content-Type: application/json" \
   -d '{
     "grant_type": "client_credentials",
@@ -44,8 +44,20 @@ curl -X POST https://api.niftipay.com/api/oauth/token \
     "client_secret": "<partner_client_secret>",
     "scope": "customers:read customers:write payments:create ..."
   }'
-# => { "access_token": "<jwt>", "expires_in": 300, "token_type": "bearer" }
 ```
+
+The token response uses the same envelope as every other endpoint — the token
+is at `data.access_token`, **not** at the top level:
+
+```json
+{ "data": { "access_token": "<jwt>", "expires_in": 300, "token_type": "bearer" },
+  "request_id": "req-1",
+  "api_version": "2026-08-01" }
+```
+
+Read it defensively. A client that reads `access_token` off the top level gets
+`undefined`, sends `Authorization: Bearer undefined`, and the failure surfaces
+one call later as `jwt malformed` — a long way from its cause.
 
 Send the returned `access_token` as the `Authorization: Bearer <jwt>` header.
 The token is short-lived (see `expires_in`); mint a fresh one before it
@@ -68,5 +80,10 @@ can use it as the Bearer token without this exchange.
   what your client is allowed. Requesting a scope your client lacks returns
   `invalid_scope`; calling an endpoint whose scope you didn't request returns
   `403 insufficient_scope`.
+- **Scope requests are all-or-nothing.** If any one scope you ask for falls
+  outside your client's grant, the token endpoint refuses the **whole** request
+  rather than issuing a token with the subset it could honour. There is no
+  introspection endpoint, so a client cannot discover its own scopes — ask for
+  what you need, and if you get `invalid_scope`, retry with less.
 - **Treat JWTs as secrets too.** Although short-lived, log them sparingly and
   don't embed them in URLs.

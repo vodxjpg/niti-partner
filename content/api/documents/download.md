@@ -15,7 +15,7 @@ an unknown id) returns the same `404`, so existence cannot be probed.
 ## Request
 
 ```bash
-curl -X GET https://api.niftipay.com/api/v1/partner/documents/doc-1/download \
+curl -X GET https://www.niftipay.com/api/v1/partner/documents/doc-1/download \
   -H "Authorization: Bearer <partner_api_key>"
 ```
 

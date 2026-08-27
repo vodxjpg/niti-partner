@@ -16,7 +16,7 @@ are the only evidence that the act happened.
 ## Request
 
 ```bash
-curl -X POST https://api.niftipay.com/api/v1/partner/customers/pc-1/agreements/tos/acceptances \
+curl -X POST https://www.niftipay.com/api/v1/partner/customers/pc-1/agreements/tos/acceptances \
   -H "Authorization: Bearer <partner_api_key>" \
   -H "Content-Type: application/json" \
   -d '{ "agreement_version": "1.0", "acceptance_channel": "partner_web",

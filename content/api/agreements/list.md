@@ -17,7 +17,7 @@ re-collected).
 ## Request
 
 ```bash
-curl -X GET https://api.niftipay.com/api/v1/partner/customers/pc-1/agreements \
+curl -X GET https://www.niftipay.com/api/v1/partner/customers/pc-1/agreements \
   -H "Authorization: Bearer <partner_api_key>"
 ```
 

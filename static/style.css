@@ -38,6 +38,7 @@ body { margin: 0; font-family: ui-sans-serif, system-ui, -apple-system, "Segoe U
 #content :not(pre) > code { background: var(--code-bg); padding: 2px 5px; border-radius: 5px; }
 .badge { display: inline-block; font-size: 11px; font-weight: 700; padding: 2px 7px; border-radius: 5px; color: #fff; }
 .badge.get { background: #2f9e6f; } .badge.post { background: var(--primary); } .badge.delete { background: #d6455d; }
+.badge.patch { background: #b8860b; }
 table { border-collapse: collapse; width: 100%; margin: 14px 0; }
 th, td { border: 1px solid var(--border); padding: 8px 10px; text-align: left; font-size: 14px; }
 th { background: var(--code-bg); }

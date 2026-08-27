@@ -14,7 +14,7 @@ customer that has never started a verification gets `404`, not an empty case.
 ## Request
 
 ```bash
-curl -X GET https://api.niftipay.com/api/v1/partner/customers/pc-1/verifications \
+curl -X GET https://www.niftipay.com/api/v1/partner/customers/pc-1/verifications \
   -H "Authorization: Bearer <partner_api_key>"
 ```
 

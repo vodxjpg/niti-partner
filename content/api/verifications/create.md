@@ -22,7 +22,7 @@ fields are rejected, not ignored.
 ## Request
 
 ```bash
-curl -X POST https://api.niftipay.com/api/v1/partner/customers/pc-1/verifications \
+curl -X POST https://www.niftipay.com/api/v1/partner/customers/pc-1/verifications \
   -H "Authorization: Bearer <partner_api_key>" \
   -H "Content-Type: application/json" \
   -d '{ "business": { "legal_name": "Example SL", "registration_number": "B123" } }'

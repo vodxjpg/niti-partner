@@ -11,7 +11,7 @@ Returns the customer's recent withdrawals, newest first. Reading history does no
 ## Request
 
 ```bash
-curl -X GET "https://api.niftipay.com/api/v1/partner/customers/{customerId}/withdrawals?limit=25" \
+curl -X GET "https://www.niftipay.com/api/v1/partner/customers/{customerId}/withdrawals?limit=25" \
   -H "Authorization: Bearer <partner_api_key>"
 ```
 

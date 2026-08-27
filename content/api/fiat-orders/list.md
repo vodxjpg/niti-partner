@@ -10,7 +10,7 @@ Returns only orders minted by **this** partner relationship. A partner can
 never see another partner's orders (they share the merchant's `userId`).
 
 ```bash
-curl https://api.niftipay.com/api/v1/partner/customers/pc-1/fiat-orders \
+curl https://www.niftipay.com/api/v1/partner/customers/pc-1/fiat-orders \
   -H "Authorization: Bearer <partner_api_key>"
 ```
 

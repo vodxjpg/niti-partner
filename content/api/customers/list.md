@@ -9,7 +9,7 @@ section: API Reference / Customers
 Returns the partner's customers (cursor-paginated).
 
 ```bash
-curl https://api.niftipay.com/api/v1/partner/customers \
+curl https://www.niftipay.com/api/v1/partner/customers \
   -H "Authorization: Bearer <partner_api_key>"
 ```
 

@@ -11,7 +11,7 @@ Adds a destination to the customer's withdrawal allowlist. The signature require
 ## Request
 
 ```bash
-curl -X POST https://api.niftipay.com/api/v1/partner/customers/{customerId}/withdrawal-wallets \
+curl -X POST https://www.niftipay.com/api/v1/partner/customers/{customerId}/withdrawal-wallets \
   -H "Authorization: Bearer <partner_api_key>" \
   -H "Idempotency-Key: <uuid>" \
   -H "X-Withdrawal-Signature: <ed25519-assertion>" \

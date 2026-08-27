@@ -11,7 +11,7 @@ Sends crypto from the customer's wallet to a registered destination. Requires an
 ## Request
 
 ```bash
-curl -X POST https://api.niftipay.com/api/v1/partner/customers/{customerId}/withdrawals \
+curl -X POST https://www.niftipay.com/api/v1/partner/customers/{customerId}/withdrawals \
   -H "Authorization: Bearer <partner_api_key>" \
   -H "Idempotency-Key: <uuid>" \
   -H "X-Withdrawal-Signature: <ed25519-assertion>" \

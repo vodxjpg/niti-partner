@@ -11,7 +11,7 @@ Links a partner's external customer to the merchant ledger.
 ## Request
 
 ```bash
-curl -X POST https://api.niftipay.com/api/v1/partner/customers \
+curl -X POST https://www.niftipay.com/api/v1/partner/customers \
   -H "Authorization: Bearer <partner_api_key>" \
   -H "Idempotency-Key: <uuid>" \
   -H "Content-Type: application/json" \

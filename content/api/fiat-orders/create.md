@@ -13,7 +13,7 @@ Creates a card payment on behalf of the customer.
 ## Request
 
 ```bash
-curl -X POST https://api.niftipay.com/api/v1/partner/customers/pc-1/fiat-orders \
+curl -X POST https://www.niftipay.com/api/v1/partner/customers/pc-1/fiat-orders \
   -H "Authorization: Bearer <partner_api_key>" \
   -H "Idempotency-Key: <uuid>" \
   -H "Content-Type: application/json" \
@@ -24,7 +24,7 @@ curl -X POST https://api.niftipay.com/api/v1/partner/customers/pc-1/fiat-orders 
 
 | Field            | Type    | Required | Notes                                                |
 |------------------|---------|----------|------------------------------------------------------|
-| `integration_id` | string  | yes      | Which merchant integration processes the payment.    |
+| `integration_id` | string  | yes      | Which integration processes the payment. Get one from [List fiat integrations](/api/fiat-integrations/list.html). |
 | `amount_cents`   | integer | yes      | Major units are **not** accepted; send cents.        |
 | `currency`       | string  | yes      | ISO 4217, e.g. `EUR`.                                |
 | `reference`      | string  | yes      | Your id for this order (unique per merchant).        |
@@ -54,6 +54,8 @@ curl -X POST https://api.niftipay.com/api/v1/partner/customers/pc-1/fiat-orders 
 |--------|--------------------|----------------------------------------------------|
 | 400    | invalid_request    | Missing/!https `return_url`/`failure_url`, wrong-typed field |
 | 409    | reference_conflict | `reference` already used (generic, ownerless)       |
+| 409    | integration_missing | `integration_id` does not belong to this customer  |
+| 409    | capability_unavailable | Card payments granted but not currently usable  |
 
 > A repeated `reference` returns a generic `reference_conflict` — it never
 > tells you whose order holds it.

@@ -7,7 +7,7 @@ section: API Reference / Crypto Orders
 <span class="badge get">GET</span> `/api/v1/partner/orders/{orderId}`
 
 ```bash
-curl https://api.niftipay.com/api/v1/partner/orders/ord_1 \
+curl https://www.niftipay.com/api/v1/partner/orders/ord_1 \
   -H "Authorization: Bearer <partner_api_key>"
 ```
 

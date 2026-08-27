@@ -11,7 +11,7 @@ Returns the customer's master wallet addresses and balances across all chains.
 ## Request
 
 ```bash
-curl -X GET https://api.niftipay.com/api/v1/partner/customers/{customerId}/wallets \
+curl -X GET https://www.niftipay.com/api/v1/partner/customers/{customerId}/wallets \
   -H "Authorization: Bearer <partner_api_key>"
 ```
 

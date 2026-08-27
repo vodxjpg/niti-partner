@@ -13,7 +13,7 @@ Provisions the customer's persistent master wallet addresses, one per chain (BTC
 No request body. The merchant is taken from the customer relationship, never from the request. This endpoint carries **no** `Idempotency-Key` requirement.
 
 ```bash
-curl -X POST https://api.niftipay.com/api/v1/partner/customers/{customerId}/wallets \
+curl -X POST https://www.niftipay.com/api/v1/partner/customers/{customerId}/wallets \
   -H "Authorization: Bearer <partner_api_key>" \
   -H "Content-Type: application/json"
 ```

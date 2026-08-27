@@ -15,7 +15,7 @@ the original order.
 ## Request
 
 ```bash
-curl -X POST https://api.niftipay.com/api/v1/partner/customers/pc-1/orders \
+curl -X POST https://www.niftipay.com/api/v1/partner/customers/pc-1/orders \
   -H "Authorization: Bearer <partner_api_key>" \
   -H "Idempotency-Key: <uuid>" \
   -H "Content-Type: application/json" \

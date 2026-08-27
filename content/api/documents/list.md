@@ -16,7 +16,7 @@ the customer has contributed no evidence yet.
 ## Request
 
 ```bash
-curl -X GET https://api.niftipay.com/api/v1/partner/customers/pc-1/documents \
+curl -X GET https://www.niftipay.com/api/v1/partner/customers/pc-1/documents \
   -H "Authorization: Bearer <partner_api_key>"
 ```
 
