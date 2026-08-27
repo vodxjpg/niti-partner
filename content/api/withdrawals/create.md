@@ -40,6 +40,18 @@ curl -X POST https://www.niftipay.com/api/v1/partner/customers/{customerId}/with
 
 Only `chain`, `asset`, `amount`, and `to` are forwarded to the platform service; everything else in the body is ignored. `userId` is set server-side from the relationship and cannot be overridden. `destinationTag`, if any, is taken from the **registered** destination row, never from the request body.
 
+## The merchant may have a minimum
+
+Each merchant carries a minimum withdrawal value in EUR. A request whose gross
+converts to less than that is refused, whatever the asset. The default is no
+minimum, so most merchants have none — but the ones that do can set it high
+(€300 is a real value in production).
+
+You cannot read it through this API. Today the refusal arrives as a generic
+`400 withdrawal_refused`, so if a withdrawal is refused for no visible reason
+and the amount is small, that is the first thing to suspect. Quote the
+`request_id` and we can tell you the threshold.
+
 ## Response `201`
 
 ```json
@@ -71,7 +83,7 @@ Only `chain`, `asset`, `amount`, and `to` are forwarded to the platform service;
 `400 amount_too_small` when the amount is consumed by gas and fees.
 `400 unsupported_asset` when the asset is unsupported on the chain.
 `400 invalid_amount` when `amount` is not a valid positive number.
-`400 withdrawal_refused` for any other service refusal not in the mapped set.
+`400 withdrawal_refused` for any other service refusal not in the mapped set — including a gross below the merchant's configured EUR minimum (see above).
 `503 temporarily_unavailable` on a 5xx from the service or a transport failure (reservation is kept so a retry is safe).
 `500 internal_error` for permanent unclassified failures.
 `409 idempotency_key_reuse` when the same key is reused with a different body.

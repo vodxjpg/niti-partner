@@ -37,6 +37,11 @@ your private key lives.
    deployed. That fingerprint is the only representation of the key that appears
    in our responses, logs or screens.
 
+Until that registration happens **every** money-out request is refused with
+`401 signature_required`, and it looks exactly like a broken signature — the
+reason (`no_key`) is logged on our side, not returned. If your very first signed
+request fails, confirm the key is registered before debugging your signing code.
+
 Keep the private key wherever your other server-side secrets live. It signs
 money movement, so it warrants the same handling as your database credentials —
 and it should never reach a browser.
