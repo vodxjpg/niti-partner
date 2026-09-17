@@ -15,6 +15,31 @@ The JWT is scoped to your partner (`clientId`) and a set of capabilities (e.g.
 `payments:create`, `payments.fiat_card`). Requests without a valid token are
 refused with `401`.
 
+## Available scopes
+
+Each endpoint's reference page states the scope(s) it requires. The full set:
+
+| Scope | Grants |
+| --- | --- |
+| `customers:read` | Read partner customers and their capabilities. |
+| `customers:write` | Create partner customers. |
+| `payments:read` | Read fiat integrations and fiat orders. |
+| `payments:create` | Create/update fiat integrations; create fiat orders. |
+| `orders:read` | Read crypto orders. |
+| `orders:create` | Create crypto orders. |
+| `wallets:read` | Read deposit wallets. |
+| `wallets:write` | Create deposit wallets. |
+| `withdrawals:read` | Read withdrawals and withdrawal wallets. |
+| `withdrawals:write` | Create withdrawals and withdrawal wallets (also requires the `withdrawals` capability and a signed second factor). |
+| `kyb:read` | Read verification records and their field requirements. |
+| `kyb:write` | Submit verification records. |
+| `documents:read` | List and download KYB documents. |
+| `documents:write` | Upload KYB documents. |
+| `agreements:read` | Read agreements and this customer's acceptance status. |
+| `agreements:accept` | Accept an agreement on a customer's behalf. |
+| `partner:read` | Read your own client's configuration — the onboarding schema, webhook subscriptions. |
+| `payouts:read` | Read-only access to a customer's payout forecast and history. |
+
 ## Partner client credentials
 
 When your partner integration is provisioned you receive two values — an OAuth
