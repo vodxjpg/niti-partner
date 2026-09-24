@@ -11,6 +11,7 @@
         { "group": "Wallets", "pages": ["api/wallets/create", "api/wallets/list"] },
         { "group": "Withdrawals", "pages": ["api/withdrawals/create", "api/withdrawals/list"] },
         { "group": "Withdrawal Wallets", "pages": ["api/withdrawal-wallets/create", "api/withdrawal-wallets/list"] },
+        { "group": "Payout Wallets", "pages": ["api/payout-wallets/rules", "api/payout-wallets/list", "api/payout-wallets/create", "api/payout-wallets/update", "api/payout-wallets/delete", "api/payout-wallets/actions"] },
         { "group": "Verifications", "pages": ["api/verifications/create", "api/verifications/fields", "api/verifications/list", "api/verifications/retrieve"] },
         { "group": "Documents", "pages": ["api/documents/upload", "api/documents/list", "api/documents/download"] },
         { "group": "Agreements", "pages": ["api/agreements/list", "api/agreements/accept"] },

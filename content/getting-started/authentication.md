@@ -39,6 +39,8 @@ Each endpoint's reference page states the scope(s) it requires. The full set:
 | `agreements:accept` | Accept an agreement on a customer's behalf. |
 | `partner:read` | Read your own client's configuration — the onboarding schema, webhook subscriptions. |
 | `payouts:read` | Read-only access to a customer's payout forecast and history. |
+| `payout_wallets:read` | Read a customer's fiat payout wallet book (also requires the `payout_wallets` capability). |
+| `payout_wallets:write` | Add, rename, archive, replace and set the payout wallet (also requires the `payout_wallets` capability and a signed second factor). |
 
 ## Partner client credentials
 

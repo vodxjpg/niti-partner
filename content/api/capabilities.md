@@ -38,6 +38,7 @@ No request body.
       { "capability": "payments.fiat_card", "enabled": true, "available": false,
         "reason": "chargeback_threshold" },
       { "capability": "payouts", "enabled": false, "available": true, "reason": null },
+      { "capability": "payout_wallets", "enabled": false, "available": true, "reason": null },
       { "capability": "refunds", "enabled": false, "available": true, "reason": null },
       { "capability": "wallets", "enabled": false, "available": true, "reason": null },
       { "capability": "withdrawals", "enabled": false, "available": true, "reason": null } ] } }
@@ -48,11 +49,12 @@ No request body.
 | `payments.crypto`     | Crypto order creation (`payments.crypto` scope). |
 | `payments.fiat_card`  | Fiat card payments.                              |
 | `payouts`             | Payouts.                                         |
+| `payout_wallets`      | Managing the customer's fiat payout wallets.     |
 | `refunds`             | Refunds.                                         |
 | `wallets`             | Wallet operations.                               |
 | `withdrawals`         | Withdrawals.                                     |
 
-All six capabilities are always returned. When a
+All seven capabilities are always returned. When a
 capability's availability check itself fails, the entry degrades to
 `{ "available": true, "reason": "availability_unknown" }` — distinguishable from a
 healthy resolve — so you can render the uncertainty rather than assert a state you
@@ -74,6 +76,7 @@ merchant signing up directly receives:
 | `wallets`            | granted     |                                    |
 | `payments.fiat_card` | **held**    | Granted when KYB is approved.      |
 | `withdrawals`        | **held**    | Granted when KYB is approved.      |
+| `payout_wallets`     | **never**   | Only Niftipay staff grant it, per customer. |
 
 The two held capabilities are the money-out and card rails. They are granted
 automatically the moment the customer's [verification](/api/verifications/create.html)

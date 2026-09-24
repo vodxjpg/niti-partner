@@ -4,10 +4,12 @@ section: Getting Started
 ---
 # Signing withdrawals
 
-The two money-out endpoints —
-[Register a withdrawal wallet](/api/withdrawal-wallets/create.html) and
-[Create a withdrawal](/api/withdrawals/create.html) — need a second credential
-beyond your bearer token: an Ed25519 assertion in `X-Withdrawal-Signature`.
+The money-out endpoints —
+[Register a withdrawal wallet](/api/withdrawal-wallets/create.html),
+[Create a withdrawal](/api/withdrawals/create.html) and every write to a
+customer's [payout wallets](/api/payout-wallets/rules.html) — need a second
+credential beyond your bearer token: an Ed25519 assertion in
+`X-Withdrawal-Signature`, signed with the same key.
 
 Everything else in this API needs only the token.
 
@@ -57,7 +59,7 @@ header    = base64url(canonical) + "." + base64url(signature)
 
 | Field       | Value                                                                 |
 |-------------|-----------------------------------------------------------------------|
-| action      | The literal `"partner.withdrawal"`, for **both** endpoints.           |
+| action      | `"partner.withdrawal"` for withdrawals and withdrawal wallets; `"partner.payout_wallet"` for payout-wallet writes. An assertion for one is refused by the other. |
 | target      | Lowercase hex SHA-256 of the request body, as bytes sent.             |
 | clientId    | Your OAuth client id. Must match the token's caller.                  |
 | nonce       | Unique per assertion. Single-use.                                     |
@@ -151,5 +153,5 @@ probing:
 | `expired` / `issued_in_future` / `ttl_too_long` | Clock or TTL bounds. Check `exp - iat ≤ 120` and your clock. |
 | `target_mismatch` | The body hash does not match the body received. |
 | `client_mismatch` | `clientId` is not the authenticated caller. |
-| `action_mismatch` | `action` is not `partner.withdrawal`. |
+| `action_mismatch` | `action` is not the one the endpoint expects (`partner.withdrawal` or `partner.payout_wallet`). |
 | `nonce_replayed` | That nonce was already used. |
