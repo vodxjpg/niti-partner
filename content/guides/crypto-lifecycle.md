@@ -145,7 +145,7 @@ retry.
 
 ## 6. Follow it
 
-**Listen** for `payment.confirmed` and `payment.expired`, or **poll**:
+**Listen** for the `payment.*` events (`payment.confirmed`, `payment.expired`, `payment.refunded`, … — see [Webhooks](/api/webhooks.html)), or **poll**:
 
 ```bash
 curl $BASE/orders/7d1dcdd4-… -H "Authorization: Bearer $TOKEN"

@@ -74,7 +74,8 @@ customer.updated            verification.pending
 requirement.created         verification.approved
 requirement.resolved        verification.rejected
 document.reviewed           capability.updated
-agreement.accepted          payment.confirmed / payment.expired
+agreement.accepted          payment.* (pending, confirmed, underpaid,
+                              expired, cancelled, refunded, chargeback)
 ```
 
 See [Webhooks](/api/webhooks.html), and two details partners consistently ask

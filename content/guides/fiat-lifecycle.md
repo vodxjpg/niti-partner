@@ -224,7 +224,7 @@ mints a real payment link, and a fresh key would mint a second one.
 
 ## 6. Follow it
 
-**Listen** for `payment.confirmed` and `payment.expired`, or **poll**:
+**Listen** for the `payment.*` events (`payment.confirmed`, `payment.expired`, `payment.refunded`, … — see [Webhooks](/api/webhooks.html)), or **poll**:
 
 ```bash
 curl $BASE/fiat-orders/36824 -H "Authorization: Bearer $TOKEN"

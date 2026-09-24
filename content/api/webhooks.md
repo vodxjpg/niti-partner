@@ -94,8 +94,24 @@ The events Niftipay can emit today:
 - `capability.updated`
 - `requirement.created`
 - `requirement.resolved`
-- `payment.confirmed`
-- `payment.expired`
+- `payment.pending` — an order was created and is awaiting payment
+- `payment.confirmed` — paid in full
+- `payment.underpaid` — funds arrived but short of the amount due (crypto; may repeat as more arrives)
+- `payment.expired` — nothing arrived before the order expired
+- `payment.cancelled` — cancelled before payment
+- `payment.refunded` — refunded, fully or partially (re-read the order for the refunded amount)
+- `payment.chargeback` — the buyer disputed a card payment
+
+Every `payment.*` event is the twin of an order webhook the merchant receives, so you
+learn everything about an order that the merchant's own endpoint does. You receive
+events for orders you created and for the merchant's own orders — never for orders
+another partner created for the same merchant.
+
+`payment.*` payloads carry `rail`: `crypto` payloads have `order_id`, `reference`,
+`chain`, `asset`, `amount`, `currency`, `tx_id`, `block_number`, `received`; `fiat`
+payloads have `order_id`, `order_key`, `merchant_reference`, `status`, `currency`,
+`total_cents`. Fields a given event cannot know (e.g. `tx_id` on `payment.pending`)
+are `null`.
 
 ## Retries
 
