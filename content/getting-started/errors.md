@@ -30,6 +30,7 @@ on the responses you failed to parse.
 | 403    | insufficient_scope        | Valid token, but minted without the scope this endpoint needs |
 | 403    | capability_not_enabled    | The capability is not granted on this customer               |
 | 404    | resource_not_found        | Resource does not exist **or is not yours** — the two are deliberately indistinguishable |
+| 409    | verification_in_progress  | The case is under review. [Raise a requirement](/api/requirements/list.html) to reopen it for what you hold |
 | 409    | capability_unavailable    | Granted, but the merchant cannot currently use it (see `details[].reason`) |
 | 409    | reference_conflict        | The `reference` is already used (generic, ownerless)         |
 | 409    | name_conflict             | A named resource with that name already exists on the customer |
