@@ -77,8 +77,12 @@ customer whose case has never been started is `404`, with a message that says so
 only partial business fields.
 
 Once the case is **under review** the endpoint is `409`: evidence cannot change
-underneath a reviewer. Wait for the outcome, then upload again if something was
-rejected.
+underneath a reviewer. Either wait for the outcome and upload again if something
+was rejected, or — when you are holding a document nobody has asked for yet, say
+an identity document for a second UBO — raise a
+[requirement](/api/requirements/list.html) for it first. An open requirement
+reopens the case for exactly what it names, so the upload is then accepted
+without the whole application being resubmitted.
 
 ## Errors
 
@@ -87,7 +91,7 @@ rejected.
 | 400    | invalid_request         | Body was not multipart/form-data.                              |
 | 403    | insufficient_scope      | Token was not minted with `documents:write`.                   |
 | 404    | resource_not_found      | Customer is not yours, or no verification has been started yet. |
-| 409    | verification_in_progress | The case is under review and cannot accept new evidence.      |
+| 409    | verification_in_progress | The case is under review. Raise a requirement to reopen it for this document. |
 | 413    | invalid_request         | Empty file, or larger than 15 MB.                              |
 | 415    | unsupported_media_type  | Content type is not PDF, JPEG or PNG.                          |
 | 422    | invalid_request         | Unknown `document_type`, or no `file` part.                    |

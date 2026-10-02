@@ -90,5 +90,5 @@ is `null` when submitted, otherwise the submit code (`missing_documents` → see
 | 400    | invalid_request              | Body missing or not a JSON object.                                   |
 | 422    | invalid_request              | Payload invalid or carries an unknown field (`details` lists issues).|
 | 422    | unsupported_verification_type| `type` was `kyc` (only `kyb` is supported).                          |
-| 409    | verification_in_progress     | Case already under review and cannot be modified.                    |
+| 409    | verification_in_progress     | Case already under review. Raise a requirement to reopen it.         |
 | 500    | internal_error               | The verification could not be read back.                             |
