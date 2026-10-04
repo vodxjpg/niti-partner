@@ -15,10 +15,10 @@ signed with **action `partner.payout_wallet`**, plus an `Idempotency-Key`.
 | Access | Scope `payout_wallets:write` **and** the `payout_wallets` capability. The capability is never granted by default — Niftipay staff turn it on per customer. |
 | Assets / chains | `asset`: `USDT` or `USDC`. `chain`: `ERC20` or `TRC20`. |
 | Cap | At most 3 active wallets. |
-| Duplicates | An address already in the book (active or archived) is refused with `409 conflict`. |
-| Rate limit | At most 3 changes per customer per 24 hours, merchant and partner changes combined → `429 rate_limited`. |
+| Duplicates | An address already in the book (active or archived) is refused with `409 conflict`. Archived holder → [`restore`](/api/payout-wallets/actions.html) it, then `set_payout`. Active holder → `set_payout` on that wallet. Never a second row for the same address. |
+| Rate limit | At most 3 changes per customer per 24 hours, merchant and partner changes combined → `429 rate_limited`. Every write counts, including an archive or a restore, so a wrong turn spends the budget. |
 | Cooling-off | A wallet added in the last 24 hours cannot become the payout wallet → `400 cooling_off`, with `details: [{ "cooling_off_until": "<ISO>" }]`. |
-| Risk acknowledgement | Adding, replacing and setting the payout wallet need `"acknowledged": true`, confirming the merchant accepted the risk statement. |
+| Risk acknowledgement | Adding, replacing and setting the payout wallet need `"acknowledged": true`, confirming the merchant accepted the risk statement. Archiving and restoring do not — neither moves payouts. |
 | Payout wallet | The current payout wallet cannot be archived; set another wallet as payout first. |
 | Notification | Every change emails the merchant a security notice naming your integration, and is recorded in the merchant's wallet history. |
 
