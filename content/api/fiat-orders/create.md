@@ -19,7 +19,9 @@ curl -X POST https://www.niftipay.com/api/v1/partner/customers/pc-1/fiat-orders 
   -H "Content-Type: application/json" \
   -d '{ "integration_id": "int-1", "amount_cents": 1000, "currency": "EUR",
         "reference": "INV-1", "return_url": "https://shop.test/done",
-        "failure_url": "https://shop.test/oops" }'
+        "failure_url": "https://shop.test/oops",
+        "email": "ada@example.com", "first_name": "Ada", "last_name": "Lovelace",
+        "phone": "+34600111222", "country": "ES" }'
 ```
 
 | Field            | Type    | Required | Notes                                                |
@@ -32,10 +34,36 @@ curl -X POST https://www.niftipay.com/api/v1/partner/customers/pc-1/fiat-orders 
 | `failure_url`    | string  | **yes**  | https only. Where the buyer goes after a decline.    |
 | `description`    | string  | no       | Optional memo.                                       |
 | `email`          | string  | no       | Buyer email.                                         |
+| `first_name`     | string  | no       | Buyer first name. See **Buyer details** below.         |
+| `last_name`      | string  | no       | Buyer last name.                                     |
+| `phone`          | string  | no       | Buyer phone. E.164 preferred, e.g. `+34600111222`.   |
+| `country`        | string  | no       | Buyer ISO-2 billing country. Normalized to upper case. |
 
 > Both `return_url` and `failure_url` are **required and https-only**. Omitting
 > either sends the buyer to the merchant's own page on that screen — so the API
 > refuses it with `400 invalid_request`.
+
+## Buyer details
+
+The five buyer fields are all optional, and all are forwarded to the card
+processor rather than stored on the order. Only `email` is persisted on the order
+row; the other four are also written to the merchant's customer profile for that
+email, where the first value seen wins and a later order without them does not
+erase it.
+
+Send them when your checkout already has them. Processors differ in what they
+require, and the one handling the payment may need a name, a phone and a billing
+country — when a field is missing, a placeholder is generated for it, which is
+accepted but makes a card issuer more likely to decline.
+
+They are the one place this rail takes **either** naming convention. `first_name`
+/ `last_name` / `phone` / `country` and `firstName` / `lastName` /
+`customer_phone` / `customer_country` are both read; the snake_case spelling is
+preferred, to match the rest of this body.
+
+A blank or wrong-typed buyer field is **dropped, not refused**. Unlike
+`reference` or `email`, these never produce a `400` — a bad phone is not a reason
+to fail a payment the buyer is waiting on.
 
 ## Response `201`
 

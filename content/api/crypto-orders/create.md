@@ -21,7 +21,8 @@ curl -X POST https://www.niftipay.com/api/v1/partner/customers/pc-1/orders \
   -H "Content-Type: application/json" \
   -d '{ "reference": "CRY-1", "network": "ETH", "asset": "USDT",
         "amount": 100, "currency": "EUR",
-        "firstName": "Ada", "lastName": "Lovelace", "email": "ada@example.com" }'
+        "firstName": "Ada", "lastName": "Lovelace", "email": "ada@example.com",
+        "phone": "+34600111222", "country": "ES" }'
 ```
 
 | Field        | Type    | Required | Notes                                                     |
@@ -33,12 +34,26 @@ curl -X POST https://www.niftipay.com/api/v1/partner/customers/pc-1/orders \
 | `currency`   | string  | yes      | e.g. `EUR`.                                               |
 | `firstName`  | string  | yes      | Buyer first name.                                         |
 | `lastName`   | string  | yes      | Buyer last name.                                          |
-| `email`      | string  | no       | Buyer email.                                              |
+| `email`      | string  | no       | Buyer email. Without it no customer profile is created.   |
+| `phone`      | string  | no       | Buyer phone. E.164 preferred. See **Buyer details** below. |
+| `country`    | string  | no       | Buyer ISO-2 country. Normalized to upper case.            |
 | `merchantId` | string  | no       | Override the merchant account if the relationship allows. |
 
 > `Idempotency-Key` is **required**. A retry after a socket timeout has no way
 > to know whether the first attempt landed, and this POST mints a deposit
 > address — so the key is mandatory, not optional.
+
+## Buyer details
+
+`phone` and `country` are optional and are **not** stored on the order. A crypto
+payment settles on-chain, so there is no card processor to present a buyer to.
+They are written to the merchant's customer profile for this `email`, alongside
+`firstName` and `lastName`, where the first value seen wins and a later order
+without them does not erase it. No `email` means no profile, so sending `phone`
+or `country` without one has no effect.
+
+Either naming convention is read: `phone` / `country` and `customer_phone` /
+`customer_country`. A blank or wrong-typed value is dropped, not refused.
 
 ## Response `201`
 
