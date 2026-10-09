@@ -21,6 +21,7 @@ rail. The first four steps are shared; only the last two differ.
 4  create a fiat integration                ← once per storefront
 5  create an order                          ← per purchase
 6  follow it to paid                        ← per purchase
+7  refund it, fully or in part              ← when the buyer sends it back
 ```
 
 Steps 1–4 you can do in one sitting. Step 3 is the one with a human in it.
@@ -233,6 +234,37 @@ curl $BASE/fiat-orders/36824 -H "Authorization: Bearer $TOKEN"
 Statuses you will see: `new` → `processing` → `completed`, or `expired`,
 `cancelled`, `error`, `refunded`.
 
+## 7. Refund it
+
+Needs the `refunds:write` scope and the `refunds` capability. The money goes
+back to the original payer, so you never name a destination and no signed
+second factor is involved.
+
+```bash
+curl -X POST $BASE/fiat-orders/36824/refunds \
+  -H "Authorization: Bearer $TOKEN" -H "Idempotency-Key: $(uuidgen)" \
+  -H "Content-Type: application/json" \
+  -d '{ "amount_cents": 400, "description": "Item returned" }'
+```
+
+```json
+{ "data": { "order_key": "36824", "currency": "EUR",
+            "refund": { "amount_cents": 400, "status": "partially_refunded" },
+            "service_fee_payer": "customer", "max_refundable_cents": 1306,
+            "refunded_cents": 400, "remaining_refundable_cents": 906 } }
+```
+
+Call it again for each further refund until `remaining_refundable_cents` is `0`,
+at which point the order's status becomes `refunded`. The ceiling is the buyer's
+`total_cents` when the buyer paid the service fee, and the merchant's
+`amount_cents` when the merchant did — never compute it yourself, read
+`remaining_refundable_cents`.
+
+**Reuse the idempotency key on a retry here too.** A fresh key after a timeout
+is a second refund of real money. See
+[Refund a fiat order](/api/fiat-orders/refund.html) for the full error table,
+including the `409 refund_full_value_only` one processor forces.
+
 ---
 
 ## What goes wrong, and what it means
@@ -245,6 +277,9 @@ Statuses you will see: `new` → `processing` → `completed`, or `expired`,
 | `409 reference_conflict` | That `reference` already exists for this merchant | Pick another, or read the order you already have. |
 | `409 below_minimum` | Under the merchant's EUR minimum | `details[0].minimum_eur` has the threshold. |
 | `429 limit_reached` | Daily cap | `details[0].reset_at` when known. |
+| `404 resource_not_found` (on a refund) | Unknown key, another partner's order, **or `refunds` not granted** | Read [capabilities](/api/capabilities.html); do not infer the grant from this. |
+| `409 not_refundable` / `409 order_not_paid` | Payment link, or not paid yet | Nothing to retry. |
+| `409 amount_exceeds_remaining` / `409 refund_full_value_only` | Over the balance, or a full-value-only processor | Retry with `details[0].remaining_refundable_cents`. |
 | `502 provider_error` | The processor refused or failed | Retry once, then quote the `request_id`. |
 | `503 temporarily_unavailable` | Transient | **The only code that means retry.** |
 

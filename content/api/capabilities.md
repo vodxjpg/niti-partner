@@ -50,7 +50,7 @@ No request body.
 | `payments.fiat_card`  | Fiat card payments.                              |
 | `payouts`             | Payouts.                                         |
 | `payout_wallets`      | Managing the customer's fiat payout wallets.     |
-| `refunds`             | Refunds.                                         |
+| `refunds`             | [Refunding a fiat order](/api/fiat-orders/refund.html) (`refunds:write` scope). A missing grant answers `404` there, not `403`. |
 | `wallets`             | Wallet operations.                               |
 | `withdrawals`         | Withdrawals.                                     |
 

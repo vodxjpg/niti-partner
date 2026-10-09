@@ -101,6 +101,13 @@ The events Niftipay can emit today:
 - `payment.cancelled` — cancelled before payment
 - `payment.refunded` — refunded, fully or partially (re-read the order for the refunded amount)
 - `payment.chargeback` — the buyer disputed a card payment
+- `refund.completed` — a fiat refund went through ([Refund a fiat order](/api/fiat-orders/refund.html))
+
+`refund.completed` is keyed on the refund itself, so it fires once per refund —
+`payment.refunded` fires alongside it as the order's status twin, and both carry
+the order's identifiers and status rather than the refunded amount. A partial
+refund therefore emits both events and leaves the order's status unchanged; use
+the refund call's response, or re-read the order, for the amounts.
 
 Every `payment.*` event is the twin of an order webhook the merchant receives, so you
 learn everything about an order that the merchant's own endpoint does. You receive

@@ -25,6 +25,7 @@ Each endpoint's reference page states the scope(s) it requires. The full set:
 | `customers:write` | Create partner customers. |
 | `payments:read` | Read fiat integrations and fiat orders. |
 | `payments:create` | Create/update fiat integrations; create fiat orders. |
+| `refunds:write` | Refund a fiat order (also requires the `refunds` capability). |
 | `orders:read` | Read crypto orders. |
 | `orders:create` | Create crypto orders. |
 | `wallets:read` | Read deposit wallets. |

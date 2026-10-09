@@ -33,6 +33,11 @@ on the responses you failed to parse.
 | 409    | verification_in_progress  | The case is under review. [Raise a requirement](/api/requirements/list.html) to reopen it for what you hold |
 | 409    | capability_unavailable    | Granted, but the merchant cannot currently use it (see `details[].reason`) |
 | 409    | reference_conflict        | The `reference` is already used (generic, ownerless)         |
+| 409    | not_refundable            | The order cannot be refunded at all — payment link, or no processor-side payment |
+| 409    | order_not_paid            | Only a paid or completed order can be refunded              |
+| 409    | nothing_to_refund         | The refundable balance is already zero                      |
+| 409    | amount_exceeds_remaining  | Over the remaining refundable balance; `details[].remaining_refundable_cents` |
+| 409    | refund_full_value_only    | This processor refunds the full remaining balance only; `details[].remaining_refundable_cents` |
 | 409    | name_conflict             | A named resource with that name already exists on the customer |
 | 409    | limit_reached             | A per-customer ceiling was hit                               |
 | 409    | idempotency_key_reuse     | Same key, different body or different path                   |
