@@ -160,5 +160,7 @@ key to read what happened rather than sending a second refund. Refusals marked
 
 A successful refund emits two webhook events: `refund.completed`, keyed on the
 refund, and `payment.refunded`, the order's status twin. Both carry the order's
-identifiers and status, not the refunded amount — re-read the order, or use this
-call's own response. See [Webhooks](/api/webhooks.html).
+identifiers and status, not the refunded amount — use this call's own response,
+re-read the order for `refunded_cents`, or call
+[List an order's refunds](/api/fiat-orders/refunds-list.html) for the
+per-refund breakdown. See [Webhooks](/api/webhooks.html).
