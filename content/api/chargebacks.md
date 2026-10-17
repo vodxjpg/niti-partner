@@ -81,6 +81,8 @@ Identical shape from both endpoints:
                                "currency": "EUR",
                                "fee_cents": 3500,
                                "fee_currency": "EUR",
+                               "dispute_amount_cents": 8487,
+                               "dispute_currency": "GBP",
                                "disputed_at": "2026-09-01T08:00:00.000Z",
                                "created_at": "2026-09-02T10:00:00.000Z" } ] } }
 ```
@@ -91,12 +93,30 @@ Identical shape from both endpoints:
 | `order_key`     | The disputed order, as a string.                                                                 |
 | `psp`           | Our public name for the processing rail. It is a stable label, not the processor's own name.      |
 | `order_status`  | The **order's** status, which a dispute turns to `chargeback`. See below.                          |
-| `amount_cents`  | The disputed order amount as the processor stated it, or `null` when it did not.                   |
+| `amount_cents`  | The order amount as we booked it, frozen onto the record when the dispute landed, or `null`.       |
 | `currency`      | Currency of `amount_cents`, or `null`.                                                            |
 | `fee_cents`     | What the processor charged for the dispute itself.                                                |
 | `fee_currency`  | Currency of `fee_cents` — the merchant's settlement currency, which need not be the order's.       |
+| `dispute_amount_cents` | What the cardholder disputed, as the processor stated it. `null` on the rails that send no amount. |
+| `dispute_currency`     | Currency of `dispute_amount_cents`. Often not the order's — see below. `null` with the amount. |
 | `disputed_at`   | When the processor opened the dispute. Falls back to `created_at` when it does not say.            |
 | `created_at`    | When we recorded it.                                                                             |
+
+### Two amounts, and why they differ
+
+`amount_cents` is the order as we booked it. `dispute_amount_cents` is what the
+cardholder disputed, in the currency the processor disputed it in — and the two
+pairs disagree whenever the acquirer settles in a currency other than the
+order's. An 87.00 EUR order settled through a GBP acquirer comes back as a
+73.84 GBP dispute.
+
+Do not derive one from the other. The rate is the acquirer's, applied on its own
+date, and it is not the settlement rate on the order either. Read the pair, or
+read neither: `dispute_currency` is never implied by `currency`.
+
+Both dispute fields are `null` together when the processor sent a dispute notice
+with no amount, and on every record we captured before we began storing them.
+`null` means the processor never said, not `0`.
 
 ### Why `order_status` and not `status`
 
