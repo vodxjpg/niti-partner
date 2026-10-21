@@ -82,6 +82,31 @@ this endpoint exists to avoid. Fetch [the payout by id](/api/payouts/retrieve)
 to get the real `orders_count` and the per-order array. Forecast (`upcoming`)
 rows are unaffected and always carry their real count.
 
+## The minimum payout, and what it does to a forecast
+
+**A settlement cycle whose net is under the merchant's minimum payout pays
+nothing.** The minimum is one euro value per merchant account — €100 by default.
+A cycle below it writes no payout at all: the orders stay unsettled and fall
+into the next cycle, which is why the following payout can cover a longer period
+and a larger `orders_count` than the merchant's schedule would suggest. Nothing
+is lost and nobody has to ask for it — the first cycle whose accumulated net
+clears the minimum pays automatically.
+
+Two consequences for reconciliation:
+
+- **A `payout_due_at` passing without a `paid` row is a normal outcome**, not a
+  failed payout. Do not alert on it. The signal that money moved is a row with
+  `status: "paid"` and a `paid_at`, never the arrival of a due date.
+- **Forecast (`upcoming`) rows are only projected for days that would actually
+  pay.** A day under the minimum is not forecast, so a merchant who is
+  accumulating can legitimately have no `upcoming` row for a while and then one
+  covering several cycles' worth of orders.
+
+The threshold itself is not exposed on this API. It is a term of the merchant's
+agreement, and a partner that needs to know a particular merchant's figure
+should ask them or support@niftipay.com rather than inferring it from payout
+history.
+
 ## What a payout covers
 
 **A payout is the merchant's entire settlement for the period — not just the

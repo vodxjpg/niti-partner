@@ -275,7 +275,7 @@ including the `409 refund_full_value_only` one processor forces.
 | `409 capability_unavailable` | Granted, but the merchant is not currently eligible | Read `details[0].reason`. |
 | `409 integration_missing` | `integration_id` is not this customer's | Re-read the list. |
 | `409 reference_conflict` | That `reference` already exists for this merchant | Pick another, or read the order you already have. |
-| `409 below_minimum` | Under the merchant's EUR minimum | `details[0].minimum_eur` has the threshold. |
+| `409 below_minimum` | Under the merchant's EUR minimum | `details[0].minimum_eur` has the threshold. This is the **withdrawal** minimum, a per-merchant euro value; it is unrelated to the €100 minimum **payout** on the card settlement cycle, which is never an error — it just rolls the cycle forward. |
 | `429 limit_reached` | Daily cap | `details[0].reset_at` when known. |
 | `404 resource_not_found` (on a refund) | Unknown key, another partner's order, **or `refunds` not granted** | Read [capabilities](/api/capabilities.html); do not infer the grant from this. |
 | `409 not_refundable` / `409 order_not_paid` | Payment link, or not paid yet | Nothing to retry. |

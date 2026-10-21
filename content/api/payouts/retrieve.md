@@ -93,6 +93,16 @@ endpoint](/api/payouts/list) for the full reasoning. The instrument for a
 merchant who must not be exposed this way is revoking `payouts` on that
 relationship.
 
+## A period can span several cycles
+
+A payout whose period looks longer than the merchant's schedule usually is: a
+cycle whose net was under the merchant's minimum payout (€100 by default) pays
+nothing and leaves its orders unsettled, so they appear in `orders[]` here
+alongside the later cycle's own. The totals in `calculation` cover everything
+the payout settled, which is the right figure to reconcile against — not an
+assumption about how many days it should represent. See [the list
+endpoint](/api/payouts/list) for how the minimum behaves.
+
 ## One answer for every miss
 
 Every failure to read a payout — the id does not exist, it belongs to a
