@@ -16,6 +16,7 @@
         { "group": "Documents", "pages": ["api/documents/upload", "api/documents/list", "api/documents/download"] },
         { "group": "Agreements", "pages": ["api/agreements/list", "api/agreements/accept"] },
         { "group": "Requirements", "pages": ["api/requirements/list"] },
+        { "group": "Orders Feed", "pages": ["api/orders-feed", "api/candidates", "api/register"] },
         "api/chargebacks",
         "api/onboarding-schema",
         "api/capabilities",

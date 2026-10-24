@@ -24,6 +24,7 @@ on the responses you failed to parse.
 | Status | code                      | Meaning                                                     |
 |--------|---------------------------|-------------------------------------------------------------|
 | 400    | invalid_request           | Unknown field, non-https URL, wrong-typed field, bad body    |
+| 400    | invalid_cursor            | `before` is not a cursor this API issued (never construct one)|
 | 400    | idempotency_key_required  | A write that requires `Idempotency-Key` did not get one      |
 | 400    | idempotency_key_invalid   | The key is longer than the cap                               |
 | 401    | unauthorized              | Missing, malformed or expired token                          |
